@@ -1,4 +1,3 @@
-// ReelSlider.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel } from "swiper/modules";
@@ -7,7 +6,7 @@ import "swiper/css";
 const allReels = [
   {
     id: 1,
-    src: "/public/media/reel1.mp4",
+    src: "/media/reel1.mp4",
     caption: "You are my forever. #love #romance",
     hashtags: ["love", "romance"],
   },
@@ -102,14 +101,16 @@ export default function ReelSlider() {
             <SwiperSlide key={reel.id}>
               <div className="flex items-center justify-center h-full w-full bg-black relative">
                 <video
-                  ref={(el) => (videoRefs.current[index] = el)}
-                  src={reel.src}
-                  autoPlay
-                  loop
-                  controls
-                  playsInline
-                  className="mx-auto my-auto max-h-[90vh] max-w-[90vw] rounded-lg"
-                />
+  ref={(el) => (videoRefs.current[index] = el)}
+  src={reel.src}
+  autoPlay
+  loop
+  muted     // ✅ ADD THIS LINE
+  controls
+  playsInline
+  className="mx-auto my-auto max-h-[90vh] max-w-[90vw] rounded-lg"
+/>
+
                 <div className="absolute bottom-0 w-full bg-black/60 px-4 pb-6 pt-4 text-center text-white">
                   <p className="text-lg font-medium">{reel.caption}</p>
                 </div>
