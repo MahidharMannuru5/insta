@@ -9,10 +9,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
  * Example: "2025-08-20T18:45:00"
  */
 const allReels = [
-  { id: 1, src: "/media/reel1.mp4", caption: "You are my forever. #love #romance", hashtags: ["love", "romance"], datetime: "2025-08-20T18:45:00" },
-  { id: 2, src: "/media/reel2.mp4", caption: "Lost in your eyes. #crush #feels",   hashtags: ["crush", "feels"],     datetime: "2025-08-18T09:10:00" },
-  { id: 3, src: "/media/reel3.mp4", caption: "Our story begins. #romance #relationship", hashtags: ["romance", "relationship"], datetime: "2025-08-12T22:05:00" },
-  { id: 4, src: "/media/love4.mp4", caption: "Just us. #couple #vibes",            hashtags: ["couple", "vibes"],    datetime: "2025-08-05T07:30:00" },
+  { id: 1, src: "https://mahidharmannuru5.github.io/insta/media/reel1.mp4", caption: "You are my forever. #love #romance", hashtags: ["love", "romance"], datetime: "2025-08-20T18:45:00" },
+  { id: 2, src: "https://mahidharmannuru5.github.io/insta/media/reel2.mp4", caption: "Lost in your eyes. #crush #feels",   hashtags: ["crush", "feels"],     datetime: "2025-08-18T09:10:00" },
+  { id: 3, src: "https://mahidharmannuru5.github.io/insta/media/reel3.mp4", caption: "Our story begins. #romance #relationship", hashtags: ["romance", "relationship"], datetime: "2025-08-12T22:05:00" },
 ];
 
 export default function ReelSlider() {
