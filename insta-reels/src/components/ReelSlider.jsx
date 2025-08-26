@@ -6,19 +6,19 @@ import "swiper/css";
 const allReels = [
   {
     id: 1,
-    src: "/media/reel1.mp4",
+    src: "https://mahidharmannuru5.github.io/insta/media/reel1.mp4",
     caption: "You are my forever. #love #romance",
     hashtags: ["love", "romance"],
   },
   {
     id: 2,
-    src: "/media/reel2.mp4",
+    src: "https://mahidharmannuru5.github.io/insta/media/reel2.mp4",
     caption: "Lost in your eyes. #crush #feels",
     hashtags: ["crush", "feels"],
   },
   {
     id: 3,
-    src: "/media/reel3.mp4",
+    src: "https://mahidharmannuru5.github.io/insta/media/reel3.mp4",
     caption: "Our story begins. #romance #relationship",
     hashtags: ["romance", "relationship"],
   },
@@ -101,16 +101,14 @@ export default function ReelSlider() {
             <SwiperSlide key={reel.id}>
               <div className="flex items-center justify-center h-full w-full bg-black relative">
                 <video
-  ref={(el) => (videoRefs.current[index] = el)}
-  src={reel.src}
-  autoPlay
-  loop
-  muted     // ✅ ADD THIS LINE
-  controls
-  playsInline
-  className="mx-auto my-auto max-h-[90vh] max-w-[90vw] rounded-lg"
-/>
-
+                  ref={(el) => (videoRefs.current[index] = el)}
+                  src={reel.src}
+                  autoPlay
+                  loop
+                  controls
+                  playsInline
+                  className="max-h-full max-w-full object-contain"
+                />
                 <div className="absolute bottom-0 w-full bg-black/60 px-4 pb-6 pt-4 text-center text-white">
                   <p className="text-lg font-medium">{reel.caption}</p>
                 </div>
