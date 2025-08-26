@@ -7,7 +7,7 @@ import "swiper/css";
 const allReels = [
   {
     id: 1,
-    src: "/media/reel1.mp4",
+    src: "/public/media/reel1.mp4",
     caption: "You are my forever. #love #romance",
     hashtags: ["love", "romance"],
   },
