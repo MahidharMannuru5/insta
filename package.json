@@ -1,8 +1,5 @@
-"homepage": "https://MahidharMannuru5.github.io/insta",
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
+{
+  "dependencies": {
+    "swiper": "^11.2.10"
+  }
 }
