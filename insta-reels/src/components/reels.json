@@ -1,11 +1,11 @@
 [
   {
-    "url": "https://www.instagram.com/reel/DLZZ3U-Sit0/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+    "id": 1,
+    "src": "https://raw.githubusercontent.com/MahidharMannuru5/insta/main/insta-reels/public/media/2025-08-27T17-03-33-test.mp4?v=2025-08-27T17:03:33",
     "caption": "test",
     "hashtags": [
       "test"
     ],
-    "media_path": "C:\\Users\\mahid\\Desktop\\instareel\\insta-reels\\public\\media\\test.mp4",
-    "timestamp": "2025-08-27T16:58:16.857175"
+    "datetime": "2025-08-27T17:03:33"
   }
 ]
