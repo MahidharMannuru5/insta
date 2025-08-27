@@ -5,7 +5,7 @@ import "swiper/css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 /** 🔗 Remote JSON of reels (update this file to add/edit reels without rebuild) */
-const REMOTE_REELS_URL = "https://mahidharmannuru5.github.io/insta/insta-reels/components/reels.json";
+const REMOTE_REELS_URL = "https://raw.githubusercontent.com/MahidharMannuru5/insta/main/insta-reels/src/components/reels.json";
 
 export default function ReelSlider() {
   /** ⬇️ allReels now comes ONLY from remote JSON */
