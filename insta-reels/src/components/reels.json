@@ -26,5 +26,12 @@
     "caption": "Just us. #couple #vibes",
     "hashtags": ["couple", "vibes"],
     "datetime": "2025-08-25T10:15:00"
+  },
+  {
+    "id": 5,
+    "src": "https://raw.githubusercontent.com/MahidharMannuru5/insta/main/insta-reels/public/media/reel5.mp4",
+    "caption": "testing. #couple #vibes",
+    "hashtags": ["couple", "vibes"],
+    "datetime": "2025-08-27T10:15:00"
   }
 ]
