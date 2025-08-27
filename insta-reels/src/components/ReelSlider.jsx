@@ -5,19 +5,26 @@ import "swiper/css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 /** 🔗 Remote JSON of reels (update this file to add/edit reels without rebuild) */
-const REMOTE_REELS_URL = "https://raw.githubusercontent.com/MahidharMannuru5/insta/main/insta-reels/src/components/reels.json";
+const REMOTE_REELS_URL =
+  "https://raw.githubusercontent.com/MahidharMannuru5/insta/main/insta-reels/src/components/reels.json";
 
 export default function ReelSlider() {
-  /** ⬇️ allReels now comes ONLY from remote JSON */
+  /** allReels only from remote JSON */
   const [allReels, setAllReels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  /** load JSON (no-store to avoid stale cache) */
   useEffect(() => {
+    const ctrl = new AbortController();
     let cancelled = false;
+
     (async () => {
       try {
-        const res = await fetch(`${REMOTE_REELS_URL}?t=${Date.now()}`);
+        const res = await fetch(REMOTE_REELS_URL, {
+          cache: "no-store",
+          signal: ctrl.signal,
+        });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         if (!cancelled) {
@@ -32,7 +39,11 @@ export default function ReelSlider() {
         }
       }
     })();
-    return () => { cancelled = true; };
+
+    return () => {
+      cancelled = true;
+      ctrl.abort();
+    };
   }, []);
 
   // hashtag filter
@@ -74,16 +85,25 @@ export default function ReelSlider() {
 
     return tagFiltered.filter((r) => {
       const rd = new Date(r.datetime);
-      if (mode === "year")  return rd.getFullYear() === selY;
-      if (mode === "month") return rd.getFullYear() === selY && rd.getMonth() === selM;
-      if (mode === "day")   return rd.getFullYear() === selY && rd.getMonth() === selM && rd.getDate() === selD;
+      if (mode === "year") return rd.getFullYear() === selY;
+      if (mode === "month")
+        return rd.getFullYear() === selY && rd.getMonth() === selM;
+      if (mode === "day")
+        return (
+          rd.getFullYear() === selY &&
+          rd.getMonth() === selM &&
+          rd.getDate() === selD
+        );
       return true;
     });
   }, [tagFiltered, mode, selectedDate]);
 
   // Sort newest first
   const reels = useMemo(
-    () => [...timeFiltered].sort((a, b) => new Date(b.datetime) - new Date(a.datetime)),
+    () =>
+      [...timeFiltered].sort(
+        (a, b) => new Date(b.datetime) - new Date(a.datetime)
+      ),
     [timeFiltered]
   );
 
@@ -93,7 +113,10 @@ export default function ReelSlider() {
       if (!v) return;
       v.muted = !hasInteracted;
       if (idx === activeIndex) v.play().catch(() => {});
-      else { v.pause(); v.currentTime = 0; }
+      else {
+        v.pause();
+        v.currentTime = 0;
+      }
     });
   };
 
@@ -118,18 +141,34 @@ export default function ReelSlider() {
   }, []);
 
   const fmtDate = (iso) =>
-    new Date(iso).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+    new Date(iso).toLocaleDateString(undefined, {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   const fmtTime = (iso) =>
-    new Date(iso).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+    new Date(iso).toLocaleTimeString(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+    });
 
   const CalendarIcon = ({ className }) => (
-    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" className={className} fill="currentColor">
+    <svg
+      aria-hidden="true"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      className={className}
+      fill="currentColor"
+    >
       <path d="M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1V3a1 1 0 0 1 1-1Zm12 8H5v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9ZM6 8h12V6H6v2Z" />
     </svg>
   );
 
-  if (loading) return <div className="text-white text-center mt-5">Loading reels…</div>;
-  if (error) return <div className="text-danger text-center mt-5">Error: {error}</div>;
+  if (loading)
+    return <div className="text-white text-center mt-5">Loading reels…</div>;
+  if (error)
+    return <div className="text-danger text-center mt-5">Error: {error}</div>;
 
   return (
     <div
@@ -167,15 +206,39 @@ export default function ReelSlider() {
         {calOpen && (
           <div
             className="position-absolute end-0 mt-2 p-2 rounded-3"
-            style={{ top: "2.75rem", background: "rgba(0,0,0,0.9)", border: "1px solid rgba(255,255,255,0.15)" }}
+            style={{
+              top: "2.75rem",
+              background: "rgba(0,0,0,0.9)",
+              border: "1px solid rgba(255,255,255,0.15)",
+            }}
           >
             <div className="d-flex align-items-center mb-2">
               <label className="me-2 small text-white-50">Mode:</label>
               <div className="btn-group btn-group-sm" role="group">
-                <button className={`btn ${mode === "all" ? "btn-danger" : "btn-outline-light"}`} onClick={() => setMode("all")}>All</button>
-                <button className={`btn ${mode === "year" ? "btn-danger" : "btn-outline-light"}`} onClick={() => setMode("year")}>Year</button>
-                <button className={`btn ${mode === "month" ? "btn-danger" : "btn-outline-light"}`} onClick={() => setMode("month")}>Month</button>
-                <button className={`btn ${mode === "day" ? "btn-danger" : "btn-outline-light"}`} onClick={() => setMode("day")}>Day</button>
+                <button
+                  className={`btn ${mode === "all" ? "btn-danger" : "btn-outline-light"}`}
+                  onClick={() => setMode("all")}
+                >
+                  All
+                </button>
+                <button
+                  className={`btn ${mode === "year" ? "btn-danger" : "btn-outline-light"}`}
+                  onClick={() => setMode("year")}
+                >
+                  Year
+                </button>
+                <button
+                  className={`btn ${mode === "month" ? "btn-danger" : "btn-outline-light"}`}
+                  onClick={() => setMode("month")}
+                >
+                  Month
+                </button>
+                <button
+                  className={`btn ${mode === "day" ? "btn-danger" : "btn-outline-light"}`}
+                  onClick={() => setMode("day")}
+                >
+                  Day
+                </button>
               </div>
             </div>
 
@@ -190,7 +253,10 @@ export default function ReelSlider() {
               />
               <button
                 className="btn btn-sm btn-outline-light"
-                onClick={() => { setMode("all"); setSelectedDate(selectedDate); }}
+                onClick={() => {
+                  setMode("all");
+                  setSelectedDate(selectedDate);
+                }}
               >
                 Clear
               </button>
@@ -210,46 +276,66 @@ export default function ReelSlider() {
         onInit={(swiper) => playActiveOnly(swiper.activeIndex)}
         onSlideChange={(swiper) => playActiveOnly(swiper.activeIndex)}
       >
-        {reels.map((reel) => (
-          <SwiperSlide key={reel.id} style={{ height: "100svh" }}>
-            <div className="position-relative w-100 h-100 bg-black">
-              <video
-                ref={(el) => {
-                  if (el) videoRefs.current.set(reel.id, el);
-                  else videoRefs.current.delete(reel.id);
-                }}
-                src={reel.src}
-                muted={!hasInteracted}
-                autoPlay
-                loop
-                playsInline
-                preload="auto"
-                className="position-absolute top-0 start-0 w-100 h-100"
-                style={{ objectFit: "cover" }}
-              />
-              <div
-                className="position-absolute bottom-0 w-100 py-3 px-3"
-                style={{
-                  background: "linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0))",
-                  zIndex: 2,
-                }}
-              >
-                <div className="d-flex align-items-center mb-1 small text-white-50">
-                  <CalendarIcon className="me-1" />
-                  <span>{fmtDate(reel.datetime)} • {fmtTime(reel.datetime)}</span>
+        {reels.map((reel) => {
+          // 🚀 cache-bust per reel so new uploads show immediately
+          const srcWithBust =
+            reel.src +
+            (reel.src.includes("?") ? "&" : "?") +
+            "v=" +
+            encodeURIComponent(reel.datetime || "");
+
+          return (
+            <SwiperSlide key={reel.id + "::" + srcWithBust} style={{ height: "100svh" }}>
+              <div className="position-relative w-100 h-100 bg-black">
+                <video
+                  ref={(el) => {
+                    if (el) videoRefs.current.set(reel.id, el);
+                    else videoRefs.current.delete(reel.id);
+                  }}
+                  src={srcWithBust}
+                  muted={!hasInteracted}
+                  autoPlay
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="position-absolute top-0 start-0 w-100 h-100"
+                  style={{ objectFit: "cover" }}
+                />
+                <div
+                  className="position-absolute bottom-0 w-100 py-3 px-3"
+                  style={{
+                    background:
+                      "linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0))",
+                    zIndex: 2,
+                  }}
+                >
+                  <div className="d-flex align-items-center mb-1 small text-white-50">
+                    <CalendarIcon className="me-1" />
+                    <span>
+                      {fmtDate(reel.datetime)} • {fmtTime(reel.datetime)}
+                    </span>
+                  </div>
+                  <p
+                    className="fw-semibold fs-6 m-0"
+                    style={{ textShadow: "0 1px 3px rgba(0,0,0,0.9)" }}
+                  >
+                    {reel.caption}
+                  </p>
                 </div>
-                <p className="fw-semibold fs-6 m-0" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.9)" }}>
-                  {reel.caption}
-                </p>
+                {!hasInteracted && (
+                  <div
+                    className="position-absolute top-0 start-0 end-0 text-center mt-2"
+                    style={{ zIndex: 3, opacity: 0.85, fontSize: 12 }}
+                  >
+                    <span className="px-2 py-1 bg-dark bg-opacity-75 rounded-pill">
+                      Tap once for sound
+                    </span>
+                  </div>
+                )}
               </div>
-              {!hasInteracted && (
-                <div className="position-absolute top-0 start-0 end-0 text-center mt-2" style={{ zIndex: 3, opacity: 0.85, fontSize: 12 }}>
-                  <span className="px-2 py-1 bg-dark bg-opacity-75 rounded-pill">Tap once for sound</span>
-                </div>
-              )}
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </div>
   );
